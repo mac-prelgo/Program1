@@ -1,0 +1,92 @@
+punctuation = ['!','+','.','@','$','%','*']
+obviousPasswords = ['password','12345678','11111111','Qwerty123','Abcd99','football','dragon1','letmein','iloveyou','administrator','welcomehome','flower','Password1']
+
+goodPassword = False
+
+print('*** CREATE ACCOUNT ***\n')
+username = input("Enter a username: ")
+
+while (not goodPassword):
+
+    password = input("Enter a password: ")
+    goodPassword = True
+    print()
+
+### Check size
+    if len(password) > 20:
+        goodPassword = False
+        print('ERROR:\tPassword must be less than 21 characters')
+
+    if len(password) < 8:
+        goodPassword = False
+        print('ERROR:\tPassword must be at least 8 characters long.')
+
+### BEGIN Complexity checks
+    lowComplexity = False
+
+    # Check case variation
+    hasUpper = False
+    hasLower = False
+
+    for char in password:
+        if char.isupper():
+            hasUpper = True
+        if char.islower():
+            hasLower = True
+
+    if not hasUpper or not hasLower:
+        goodPassword = False
+        lowComplexity = True
+
+    # Check contents for digit
+    hasDigit = False
+
+    for char in password:
+        if char.isdigit():
+            hasDigit = True
+
+    if not hasDigit:
+        goodPassword = False
+        lowComplexity = True
+
+    # Check contents for punctuation
+    hasPunc = False
+
+    for char in password:
+        if char in punctuation:
+            hasPunc = True
+
+    if not hasPunc:
+        goodPassword = False
+        lowComplexity = True
+
+### END Complexity checks
+    if lowComplexity:
+        print('ERROR:\tPasswords must contain both upper and lower case letters,\n\tat least one digit and at least one punctuation mark (!+.@$%*).')
+
+### Check contents for allowed characters
+    hasValid = True
+
+    for char in password:
+        if not (char.isalnum() or char in punctuation):
+                hasValid = False
+
+    if not hasValid:
+        goodPassword = False
+        print('ERROR:\tPassword contains an Invalid Character.')
+
+### Check for obvious password.
+    if password in obviousPasswords:
+        goodPassword = False
+        print('ERROR:\tDon\'t use common passwords.')
+
+### Check for username.
+    rev_username = username[::-1]
+
+    if username in password or rev_username in password:
+        goodPassword = False
+        print('ERROR:\tPasswords can\'t contain a variation of the username.')
+
+    print()
+
+print('Good Password!')
