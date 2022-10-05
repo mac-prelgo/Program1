@@ -1,0 +1,96 @@
+vowels = ['a', 'e', 'i', 'o', 'u']
+punctuation = ['.', '!', '?', ',', ';']
+
+print('\n*** [ENGLISH -> PIG LATIN] TRANSLATOR ***')
+
+### Get user input.
+e_sentence = input('\nEnter a sentence to be translated: ')
+
+### Control loop.
+translate = True
+while(translate):
+
+    ### Split sentence into string list.
+    e_list = e_sentence.split()
+
+    ### Create list for fianlized sentence.
+    latin_list = []
+
+    for i in e_list:
+        if i[0].lower() in vowels:
+
+            ### Split string list into character list
+            ### in order to determine case.
+            char_list = list(i)
+
+            if char_list[0].isupper():
+                uppercaseWord = True
+            else:
+                uppercaseWord = False
+
+            ### Rejoin characters into string in order
+            ### to translate.
+            word_str = ''.join(char_list)
+            word_str = i[1:] + i[0].lower() + 'way'
+            char_list = list(word_str)
+
+            ### Determine new case
+            if uppercaseWord == True:
+                char_list[0] = char_list[0].upper()
+
+            ### Search for punctuation in new
+            ### character list.
+            for j in char_list:
+                if j in punctuation:
+
+                    ### Move punctuation to the end of list.
+                    punc = j
+                    char_list.remove(j)
+                    char_list.append(punc)
+
+            ### Join list to finalize string.
+            word_str = ''.join(char_list)
+
+            ### Append translated string.
+            latin_list.append(word_str)
+
+        else:
+
+            ### Repeated procedure for string
+            ### starting with a consonant.
+            char_list = list(i)
+
+            if char_list[0].isupper():
+                uppercaseWord = True
+            else:
+                uppercaseWord = False
+
+            word_str = ''.join(char_list)
+            word_str = i[1:] + i[0].lower() + 'ay'
+            char_list = list(word_str)
+
+            for j in char_list:
+                if j in punctuation:
+                    punc = j
+                    char_list.remove(j)
+                    char_list.append(punc)
+
+            if uppercaseWord == True:
+                char_list[0] = char_list[0].upper()
+
+            word_str = ''.join(char_list)
+            latin_list.append(word_str)
+
+    ### Join to finalize sentence.
+    latin_sentence = ' '.join(latin_list)
+
+    print("Pig Latin:", end=' ')
+    print(latin_sentence)
+
+    ### Get user input to determine loop.
+    choice = input("\nEnter another sentence? [Y\\N]: ")
+    if choice.lower() == 'n':
+        translate = False
+        print("Exiting...\n")
+    else:
+        e_sentence = input('\nEnter a sentence to be translated: ')
